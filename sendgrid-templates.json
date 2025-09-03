@@ -1,0 +1,36 @@
+{
+  "version": "2025-09-01",
+  "description": "SendGrid Dynamic Templates for Tavus-powered funnel (lead, contact receipt, Calendly confirm/internal, demo summary).",
+  "templates": [
+    {
+      "name": "Lead Internal",
+      "env_var": "SENDGRID_TMPL_LEAD_INTERNAL",
+      "subject": "New Lead — {{lead_vertical}} · {{lead_name}} · {{lead_email}}",
+      "html": "<!doctype html><html><body>🚀 New Lead Captured: {{lead_name}} ({{lead_email}})</body></html>"
+    },
+    {
+      "name": "Contact Receipt",
+      "env_var": "SENDGRID_TMPL_CONTACT_RECEIPT",
+      "subject": "We got your message, {{lead_name}} — we’ll reply shortly",
+      "html": "<!doctype html><html><body>Thanks {{lead_name}}, we’ll be in touch soon.</body></html>"
+    },
+    {
+      "name": "Calendly Invitee Confirm",
+      "env_var": "SENDGRID_TMPL_CALENDLY_CONFIRM",
+      "subject": "Confirmed: {{event_name}} on {{event_start_local}}",
+      "html": "<!doctype html><html><body>You're booked for {{event_name}} at {{event_start_local}}</body></html>"
+    },
+    {
+      "name": "Calendly Internal Alert",
+      "env_var": "SENDGRID_TMPL_CALENDLY_INTERNAL",
+      "subject": "New Booking — {{invitee_name}} · {{event_start_local}} · {{event_name}}",
+      "html": "<!doctype html><html><body>New booking from {{invitee_name}} for {{event_name}}</body></html>"
+    },
+    {
+      "name": "Demo Summary",
+      "env_var": "SENDGRID_TMPL_DEMO_SUMMARY",
+      "subject": "Your AI demo recap — next steps inside",
+      "html": "<!doctype html><html><body>Demo recap for {{name}} in {{vertical}}</body></html>"
+    }
+  ]
+}
