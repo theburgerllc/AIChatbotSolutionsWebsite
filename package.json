@@ -9,13 +9,15 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
+    "vercel-build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
-    "check:pinned": "node -e \"const p=require('./package.json'); const all={...p.dependencies,...p.devDependencies}; const bad=Object.entries(all||{}).filter(([k,v])=>typeof v==='string' && /[\\^\\~\\*xX]|[|]/.test(v)); if(bad.length){console.error('Unpinned specs:',bad); process.exit(1)}\""
+    "check:pinned": "node -e \"const p=require('./package.json'); const all={...p.dependencies,...p.devDependencies}; const bad=Object.entries(all||{}).filter(([k,v])=>typeof v==='string' && /[\\^\\~\\*xX]|[|]/.test(v)); if(bad.length){console.error('Unpinned specs:',bad); process.exit(1)}\"",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "6.15.0",
@@ -58,5 +60,8 @@
     "semver": "^7.5.3",
     "path-to-regexp": "6.3.0",
     "esbuild": "0.25.0"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
   }
 }
