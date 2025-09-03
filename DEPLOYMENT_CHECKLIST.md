@@ -1,5 +1,9 @@
 # Deployment Checklist - AI Chatbot Solutions
 
+## ⚠️ Vercel Protection
+
+**Important:** Disable Vercel Protection for Preview/Production or use Bypass Token for manual checks. Webhooks require Protection OFF to receive 200.
+
 ## ✅ Pre-Deployment Verification
 
 ### 1. Local Build & Test

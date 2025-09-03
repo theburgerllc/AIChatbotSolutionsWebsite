@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { get } from '@vercel/edge-config';
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)']
+  // Exclude static assets, webhooks, health check, and SEO files from middleware
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|api/health|api/stripe/webhook|api/tavus/webhook|assets/).*)',
+  ],
 };
 
 function base64Encode(json: string): string {
