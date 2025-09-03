@@ -60,8 +60,5 @@
     "semver": "^7.5.3",
     "path-to-regexp": "6.3.0",
     "esbuild": "0.25.0"
-  },
-  "prisma": {
-    "schema": "prisma/schema.prisma"
   }
 }
