@@ -7,6 +7,7 @@ interface TavusResponse {
 interface TavusConfig {
   retryAttempts?: number;
   retryDelay?: number;
+  timeout?: number;
 }
 
 export class TavusError extends Error {
@@ -17,10 +18,13 @@ export class TavusError extends Error {
 }
 
 export async function startConversation(config: TavusConfig = {}): Promise<string> {
-  const { retryAttempts = 3, retryDelay = 1000 } = config;
+  const { retryAttempts = 3, retryDelay = 1000, timeout = 30000 } = config;
   
   for (let attempt = 1; attempt <= retryAttempts; attempt++) {
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeout);
+      
       const res = await fetch('/api/tavus/start', {
         method: 'POST',
         headers: {
@@ -28,8 +32,13 @@ export async function startConversation(config: TavusConfig = {}): Promise<strin
         },
         body: JSON.stringify({
           timestamp: Date.now(),
+          userAgent: navigator.userAgent,
+          referrer: document.referrer,
         }),
+        signal: controller.signal,
       });
+      
+      clearTimeout(timeoutId);
 
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({ error: 'Unknown error' }));
@@ -51,8 +60,21 @@ export async function startConversation(config: TavusConfig = {}): Promise<strin
         throw new TavusError('No conversation URL received');
       }
       
+      // Track successful start
+      if (typeof window !== 'undefined') {
+        const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+        gtag?.('event', 'tavus_conversation_started', {
+          event_category: 'engagement',
+          event_label: 'demo',
+        } as unknown as Record<string, unknown>);
+      }
+      
       return data.conversation_url;
-    } catch (error) {
+    } catch (error: unknown) {
+      if ((error as { name?: string })?.name === 'AbortError') {
+        throw new TavusError('Request timeout - please try again', 'TIMEOUT');
+      }
+      
       if (attempt === retryAttempts) {
         if (error instanceof TavusError) {
           throw error;
@@ -81,3 +103,11 @@ export function isTavusConfigured(): boolean {
   return true;
 }
 
+export async function checkTavusStatus(): Promise<boolean> {
+  try {
+    const res = await fetch('/api/tavus/status');
+    return res.ok;
+  } catch {
+    return false;
+  }
+}

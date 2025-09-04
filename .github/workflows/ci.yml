@@ -18,6 +18,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
+      - name: Create Prisma .env from secret (DATABASE_URL)
+        if: ${{ secrets.DATABASE_URL }}
+        run: |
+          mkdir -p prisma
+          printf "DATABASE_URL=%s\n" "${{ secrets.DATABASE_URL }}" > prisma/.env
+      
+      - name: Run Prisma migrations
+        if: ${{ secrets.DATABASE_URL }}
+        run: npx prisma migrate deploy --schema ./prisma/schema.prisma
+      
       - name: Check pinned dependencies
         run: npm run check:pinned
       

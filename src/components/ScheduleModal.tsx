@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useRef } from 'react';
+import { track } from '@/lib/analytics';
+import { ANALYTICS_LABELS } from '@/lib/constants';
 
 export default function ScheduleModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const url = process.env.NEXT_PUBLIC_CALENDLY_URL;
@@ -10,6 +12,7 @@ export default function ScheduleModal({ open, onClose }: { open: boolean; onClos
       if (e.key === 'Escape') onClose();
     }
     if (open) {
+      try { track(ANALYTICS_LABELS.scheduler_open); } catch { /* noop */ }
       window.addEventListener('keydown', onKey);
       setTimeout(() => closeRef.current?.focus(), 0);
     }

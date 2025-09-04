@@ -1,6 +1,8 @@
 "use client";
 import { useMemo, useState } from 'react';
-import { ROI_DEFAULTS } from '@/lib/constants';
+import Link from 'next/link';
+import { ROI_DEFAULTS, ANALYTICS_LABELS } from '@/lib/constants';
+import { track } from '@/lib/analytics';
 
 export default function ROIQuickCalc() {
   const [leads, setLeads] = useState<number>(ROI_DEFAULTS.leadsPerMonth);
@@ -33,7 +35,16 @@ export default function ROIQuickCalc() {
         <div className="card"><div className="text-white/60 text-xs">With AI monthly revenue</div><div className="text-xl font-bold">${results.newRev.toFixed(0)}</div></div>
         <div className="card"><div className="text-white/60 text-xs">Monthly uplift</div><div className="text-xl font-bold">${results.uplift.toFixed(0)}</div></div>
       </div>
-      <div className="mt-3 text-white/80 text-sm">ROI: {(results.roi * 100).toFixed(0)}% · Payback: {Number.isFinite(results.payback) ? `${results.payback} mo` : 'N/A'}</div>
+      <div className="mt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="text-white/80 text-sm">ROI: {(results.roi * 100).toFixed(0)}% · Payback: {Number.isFinite(results.payback) ? `${results.payback} mo` : 'N/A'}</div>
+        <Link 
+          href="/book" 
+          className="btn-primary"
+          onClick={() => { try { track(ANALYTICS_LABELS.pricing_viewed, { source: 'roi_calc_cta' }); } catch { /* noop */ } }}
+        >
+          Get my ROI plan →
+        </Link>
+      </div>
     </div>
   );
 }

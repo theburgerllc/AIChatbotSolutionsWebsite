@@ -9,6 +9,8 @@ out/
 .env
 .env.*
 !.env.example
+!prisma/.env.example
+prisma/.env
 
 # Logs
 npm-debug.log*

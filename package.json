@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "NEXT_DISABLE_LIGHTNINGCSS=1 prisma generate && next build",
     "vercel-build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint .",
@@ -17,7 +17,10 @@
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "check:pinned": "node -e \"const p=require('./package.json'); const all={...p.dependencies,...p.devDependencies}; const bad=Object.entries(all||{}).filter(([k,v])=>typeof v==='string' && /[\\^\\~\\*xX]|[|]/.test(v)); if(bad.length){console.error('Unpinned specs:',bad); process.exit(1)}\"",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "db:migrate:deploy": "prisma migrate deploy --schema ./prisma/schema.prisma",
+    "db:migrate:status": "prisma migrate status --schema ./prisma/schema.prisma",
+    "db:generate": "prisma generate --schema ./prisma/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "6.15.0",
@@ -25,8 +28,8 @@
     "@react-three/fiber": "9.3.0",
     "@sendgrid/mail": "8.1.5",
     "@stripe/stripe-js": "7.9.0",
-    "@tailwindcss/postcss": "4.1.12",
     "@vercel/edge-config": "1.4.0",
+    "autoprefixer": "10.4.19",
     "framer-motion": "11.18.2",
     "next": "15.5.2",
     "next-auth": "4.24.11",
@@ -34,7 +37,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "stripe": "18.5.0",
-    "tailwindcss": "4.1.12",
+    "tailwindcss": "3.4.1",
     "three": "0.179.1"
   },
   "devDependencies": {
@@ -48,6 +51,7 @@
     "@types/three": "0.179.0",
     "@typescript-eslint/eslint-plugin": "8.42.0",
     "@typescript-eslint/parser": "8.42.0",
+    "dotenv": "16.6.1",
     "eslint": "9.34.0",
     "eslint-config-next": "15.5.2",
     "eslint-plugin-react": "7.37.5",
@@ -60,5 +64,8 @@
     "semver": "^7.5.3",
     "path-to-regexp": "6.3.0",
     "esbuild": "0.25.0"
+  },
+  "optionalDependencies": {
+    "lightningcss-loader-linux-x64-gnu": "npm:null@*"
   }
 }

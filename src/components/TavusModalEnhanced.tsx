@@ -8,7 +8,7 @@ interface TavusModalProps {
   error?: string;
 }
 
-export default function TavusModal({ open, onClose, conversationUrl, error }: TavusModalProps) {
+export default function TavusModalEnhanced({ open, onClose, conversationUrl, error }: TavusModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasPermissions, setHasPermissions] = useState(true);
@@ -54,7 +54,7 @@ export default function TavusModal({ open, onClose, conversationUrl, error }: Ta
         onClick={onClose}
         aria-hidden="true" 
       />
-      <div className="relative w-[92vw] max-w-4xl h-[80vh] max-h-[600px] bg-gradient-to-br from-gray-900/95 to-black/95 border border-purple-500/20 rounded-xl overflow-hidden shadow-2xl backdrop-blur-md animate-slideInUp">
+      <div className="relative w-[92vw] max-w-4xl h-[80vh] max-h-[600px] bg-gradient-to-br from-gray-900/95 to-black/95 border border-purple-500/20 rounded-xl overflow-hidden shadow-2xl backdrop-blur-md animate-slide-in-up">
         {/* Header */}
         <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-black/50 to-transparent z-10 flex items-center justify-between px-6">
           <div className="flex items-center gap-3">
@@ -171,4 +171,3 @@ export default function TavusModal({ open, onClose, conversationUrl, error }: Ta
     </div>
   );
 }
-

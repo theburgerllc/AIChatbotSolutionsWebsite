@@ -16,6 +16,22 @@ export default function GAProvider() {
           gtag('config', '${id}', { anonymize_ip: true, send_page_view: true });
         `}
       </Script>
+      <Script id="utm-capture" strategy="afterInteractive">
+        {`
+          (function(){
+            try {
+              const params = new URLSearchParams(window.location.search);
+              const utm = {};
+              let has = false;
+              ['utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(k=>{
+                const v = params.get(k);
+                if (v) { utm[k] = v; has = true; }
+              });
+              if (has) sessionStorage.setItem('utm_params', JSON.stringify(utm));
+            } catch (e) {}
+          })();
+        `}
+      </Script>
     </>
   );
 }

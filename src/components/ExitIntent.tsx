@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
+import { track } from '@/lib/analytics';
 
 export default function ExitIntent({ onAccept }: { onAccept?: () => void }) {
   const [show, setShow] = useState(false);
@@ -27,8 +28,8 @@ export default function ExitIntent({ onAccept }: { onAccept?: () => void }) {
           <div className="text-white/70 text-sm">Use code SAVE15 at checkout. Want the discount?</div>
         </div>
         <div className="flex gap-2">
-          <button className="btn-secondary" onClick={() => setShow(false)}>No thanks</button>
-          <button className="btn-primary" onClick={() => { try { localStorage.setItem('discount_code', 'SAVE15'); } catch { /* noop */ } onAccept?.(); setShow(false); }}>Yes, apply</button>
+          <button className="btn-secondary" onClick={() => { try { track('exit_intent_declined'); } catch { /* noop */ } setShow(false); }}>No thanks</button>
+          <button className="btn-primary" onClick={() => { try { localStorage.setItem('discount_code', 'SAVE15'); track('exit_intent_accepted'); } catch { /* noop */ } onAccept?.(); setShow(false); }}>Yes, apply</button>
         </div>
       </div>
     </div>

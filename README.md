@@ -21,14 +21,22 @@ Production-ready Next.js (App Router) scaffold for a Tavus-powered AI Video Chat
 3. Environment
    - Copy `.env.example` → `.env.local` and fill values. Your `.env.local` must never be committed.
 
-4. Dev server
+4. Database (Prisma)
+   - Prisma CLI will auto-load env from `.env` at repo root and `prisma/.env` (the latter wins) via `prisma.config.ts`.
+   - For local dev with SQLite, copy `prisma/.env.example` → `prisma/.env` (keep it private) and adjust if needed.
+   - Common commands:
+     - Deploy migrations: `npm run db:migrate:deploy`
+     - Show status: `npm run db:migrate:status`
+     - Generate client: `npm run db:generate`
+
+5. Dev server
    - `npm run dev` (http://localhost:3000)
 
-5. Typecheck & Lint
+6. Typecheck & Lint
    - `npm run typecheck`
    - `npm run lint`
 
-6. Tests
+7. Tests
    - `npm test`
 
 ## Testing & Verification

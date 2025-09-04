@@ -109,11 +109,11 @@ export async function POST(req: NextRequest) {
       conversation_id: data.conversation_id,
     });
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Tavus start error:', error);
     
     // Handle specific error types
-    if (error.name === 'AbortError') {
+    if ((error as { name?: string })?.name === 'AbortError') {
       return NextResponse.json(
         { error: 'Request timeout - Tavus service is not responding' },
         { status: 504 }
@@ -129,8 +129,7 @@ export async function POST(req: NextRequest) {
 
 // Health check endpoint
 export async function GET() {
-  const isConfigured = !!
-    process.env.TAVUS_API_KEY &&
+  const isConfigured = !!process.env.TAVUS_API_KEY &&
     !!process.env.TAVUS_PERSONA_ID &&
     !!process.env.TAVUS_REPLICA_ID;
   
@@ -139,4 +138,3 @@ export async function GET() {
     timestamp: Date.now(),
   });
 }
-
