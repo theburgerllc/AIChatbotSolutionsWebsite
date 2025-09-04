@@ -4,7 +4,7 @@ import { get } from '@vercel/edge-config';
 export const config = {
   // Exclude static assets, webhooks, health check, and SEO files from middleware
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|api/health|api/stripe/webhook|api/tavus/webhook|assets/).*)',
+    '/((?!_next/|favicon.ico|robots.txt|sitemap.xml|api/health|api/stripe/webhook|api/tavus/webhook|assets/).*)',
   ],
 };
 
